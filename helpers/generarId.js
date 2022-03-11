@@ -5,6 +5,4 @@ const generarId = ()=>{
     return id+fecha;
 }
 
-module.exports ={
-    generarId
-}
+module.exports = generarId

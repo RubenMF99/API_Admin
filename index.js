@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const Userouter = require("./routes/UsuarioRoutes")
+const Userouter = require("./routes/UsuarioRoutes");
 //Conectando a base de datos
 const connectDB = require("./config/db");
 //ocultando conexion a base de datos
