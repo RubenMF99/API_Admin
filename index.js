@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const Userouter = require("./routes/UsuarioRoutes");
+const Prorouter = require("./routes/ProyectoRoutes");
 //Conectando a base de datos
 const connectDB = require("./config/db");
 //ocultando conexion a base de datos
@@ -16,7 +17,7 @@ connectDB();
 
 //Ruta usuarios
 app.use("/api/user",Userouter);
-
+app.use("/api/project",Prorouter);
 
 var PORT = process.env.PORT || 4000;
 

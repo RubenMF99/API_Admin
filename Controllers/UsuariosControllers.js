@@ -106,13 +106,14 @@ const replacePassword = async(req,res) => {
         await user.save();
         res.json({msg:"Password actualizado con exito"});
         }catch(error){
-            console.og(error);
+            console.log(error);
     }
 }
 
 
-const perfil = async () =>{
-
+const perfil = async (req,res) =>{
+    const {usuario} = req; 
+    console.log(usuario);
 }
 module.exports = {
     registrar_user,
