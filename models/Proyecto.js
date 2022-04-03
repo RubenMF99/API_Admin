@@ -21,12 +21,12 @@ const ProyectoShema = mongoose.Schema({
         trim:true
     },
     creator:{
-        type:mongoose.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Usuario",
     },
     colaborator:[
         {
-            type:mongoose.Types.ObjectId,
+            type:mongoose.Schema.Types.ObjectId,
             ref:"Usuario",
         }
     ]

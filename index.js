@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const Userouter = require("./routes/UsuarioRoutes");
 const Prorouter = require("./routes/ProyectoRoutes");
+const homeworkRoutes = require("./routes/HomeworkRoutes")
 //Conectando a base de datos
 const connectDB = require("./config/db");
 //ocultando conexion a base de datos
@@ -18,6 +19,7 @@ connectDB();
 //Ruta usuarios
 app.use("/api/user",Userouter);
 app.use("/api/project",Prorouter);
+app.use("/api/homework",homeworkRoutes);
 
 var PORT = process.env.PORT || 4000;
 

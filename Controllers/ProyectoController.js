@@ -43,7 +43,7 @@ const obtenerProyectos = async(req,res) =>{
 }
 const updateProject = async (req,res) => {
     const {id} = req.params;
-   const project = await ProyectoModel.findByIdAndUpdate(id,req.body);
+   const project = await ProyectoModel.findById(id);
    if(!project){
        const error = new Error("El proyecto no existe");
        return res.status(402).json({msg:error.message});
@@ -63,7 +63,7 @@ const updateProject = async (req,res) => {
 
 const deleteProject = async (req,res) => {
     const {id} = req.params;
-    const project = await ProyectoModel.findByIdAndUpdate(id,req.body);
+    const project = await ProyectoModel.findById(id);
     if(!project){
         const error = new Error("El proyecto no existe");
         return res.status(402).json({msg:error.message});
@@ -73,8 +73,8 @@ const deleteProject = async (req,res) => {
          return res.status(402).json({msg:error.message});
     }
     try{
-         let actualizado =  await ProyectoModel.findByIdAndDelete(id,req.body);
-         return res.json(actualizado);
+         let deleteProject =  await ProyectoModel.findByIdAndDelete(id,req.body);
+         return res.json(deleteProject );
     }catch(error){
          console.log(error);
     }

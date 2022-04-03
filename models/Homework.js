@@ -13,8 +13,22 @@ const HomeworkModel = mongoose.Schema({
         required:true,
         trim:true
     },
+    statusHomework:{
+        type:Boolean,
+        default:false
+    },
+    deliveryDate:{
+        type:Date,
+        required:true,
+        default:Date.now()
+    },
+    priority:{
+        type:String,
+        required:true,
+        enum:['baja','media','alta']
+    },
     project:{
-        type:mongoose.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Proyecto"
     }
 },
@@ -22,3 +36,4 @@ const HomeworkModel = mongoose.Schema({
         timestamps:true
     }
 );
+module.exports = mongoose.model("homework",HomeworkModel);
