@@ -15,6 +15,7 @@ const obtenerHomework = async (req,res) => {
     }
     res.json(Homework);
 }
+
 const agregateHomework = async (req,res) =>{  
     const {project} = req.body;
     const existed = await ProjectModel.findById(project);
@@ -38,10 +39,43 @@ const agregateHomework = async (req,res) =>{
 }
 
 const updateHomewok = async (req,res) =>{
+    const {id} = req.params;
+    const Homework = await HomeworkModel.findById(id).populate("project");
+    if(!Homework){
+        const error = new Error('Homework not found');
+        res.status(202).json({msg:error.message});
+    }
+    
+    if(Homework.project.creator.toString() !== req.usuario._id.toString()){
+        const error = new Error("The user not is creator as project");
+        return res.status(402).json({msg:error.message});
+    }
 
+    try{
+        let actualizado =  await HomeworkModel.findByIdAndUpdate(id,req.body);
+        return res.json(actualizado);
+    }catch(error){
+        console.log(error);
+    }
 }
 const deleteHomework = async (req,res) =>{
+    const {id} = req.params;
+    const Homework = await HomeworkModel.findById(id).populate("project");
+    if(!Homework){
+        const error = new Error('Homework not found');
+        res.status(202).json({msg:error.message});
+    }
     
+    if(Homework.project.creator.toString() !== req.usuario._id.toString()){
+        const error = new Error("The user not is creator as project");
+        return res.status(402).json({msg:error.message});
+    }
+    try{
+        let eliminada =  await HomeworkModel.findByIdAndDelete(id);
+        return res.json(eliminada);
+    }catch(error){
+        console.log(error);
+    }
 } 
 const cambiaEstado = async (req,res) => {
 

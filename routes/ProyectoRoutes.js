@@ -23,7 +23,6 @@ router
     .delete(Checkauth,deleteProject)
     .put(Checkauth,updateProject);
 
-router.get('/homework/:id',Checkauth,obtenerHomework);
 router.post('/new-colaborator',Checkauth,agregateColaborator);
 router.post('/delete-colaborator/:id',Checkauth,deleteColaborator);
 

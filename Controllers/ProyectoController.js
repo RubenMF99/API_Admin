@@ -1,4 +1,5 @@
 const ProyectoModel = require("../models/Proyecto");
+const HomeworkModel = require("../models/Homework");
 
 const createdProject = async(req,res)=>{
     const {nameProject} = req.body;
@@ -31,14 +32,23 @@ const obtenerProject = async (req,res) =>{
         const error = new Error("Accion no valida");
         return res.status(402).json({msg:error.message});
    }
-   res.json(project);
+   //Consultando tareas asociadas
+   const homework = await HomeworkModel.find().where("Proyecto").equals(project._id);
+   res.json({
+       project,
+       homework
+   });
 }
 
 const obtenerProyectos = async(req,res) =>{
     const Projects = await ProyectoModel.find().where("creator").equals(req.usuario);
-    if(Projects){
-        res.json({msg:Projects});
+    if(!Projects){
+        const error = new Error("El Usuario no tiene obtenerProyectos");
+        return res.status(402).json({msg:error.message});
     }
+    
+    res.json({msg:Projects});
+    
 
 }
 const updateProject = async (req,res) => {
@@ -73,7 +83,7 @@ const deleteProject = async (req,res) => {
          return res.status(402).json({msg:error.message});
     }
     try{
-         let deleteProject =  await ProyectoModel.findByIdAndDelete(id,req.body);
+         let deleteProject =  await ProyectoModel.findByIdAndDelete(id);
          return res.json(deleteProject );
     }catch(error){
          console.log(error);
@@ -81,7 +91,6 @@ const deleteProject = async (req,res) => {
 }
 const deleteColaborator = async (req,res) => {}
 const agregateColaborator = async (req,res) => {}
-const obtenerHomework = async (req,res) => {}
 
 module.exports ={
     createdProject,
@@ -90,6 +99,5 @@ module.exports ={
     updateProject,
     deleteProject,
     deleteColaborator,
-    agregateColaborator,
-    obtenerHomework 
+    agregateColaborator
 }
