@@ -1,6 +1,7 @@
 const UserModel = require("../models/Usuario");
 const generarId =  require("../helpers/generarId");
 const generarToken =  require("../helpers/generarJWT");
+const emailRegistro = require("../helpers/emails");
 
 const registrar_user = async(req,res) => {
     const {email} = req.body;
@@ -12,8 +13,14 @@ const registrar_user = async(req,res) => {
         try {
             const usuario = new UserModel(req.body);
             usuario.token = generarId();
-            const usersave = await usuario.save();
-            res.json({msg:usersave})
+            await usuario.save();
+            // enviando info al correo
+            emailRegistro({
+                email:usuario.email,
+                name:usuario.name,
+                token:usuario.token
+            });
+            res.json({msg:"Usuario creado correctamente, revisa tu email para confirmar cuenta"})
         } catch (error) {
             console.log(error);
         }
@@ -50,16 +57,15 @@ const autenticate = async (req,res)=>{
 const confirmar = async (req,res)=>{
     const {token} = req.params;
     const confirnUser =  await UserModel.findOne({token});
-
         if(!confirnUser){
                 const error = new Error("Token invalido");
-                res.status(404).json({msg:error.message});
+                return res.status(404).json({msg:error.message});
         }
         try {
             confirnUser.confirmado = true;
             confirnUser.token = "";
             await confirnUser.save();
-            res.json({
+            return res.json({
                 msg:'Usuario autenticado'
             });
         } catch (error) {

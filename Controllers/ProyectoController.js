@@ -42,14 +42,7 @@ const obtenerProject = async (req,res) =>{
 
 const obtenerProyectos = async(req,res) =>{
     const Projects = await ProyectoModel.find().where("creator").equals(req.usuario);
-    if(!Projects){
-        const error = new Error("El Usuario no tiene obtenerProyectos");
-        return res.status(402).json({msg:error.message});
-    }
-    
     res.json({msg:Projects});
-    
-
 }
 const updateProject = async (req,res) => {
     const {id} = req.params;
