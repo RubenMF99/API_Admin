@@ -10,8 +10,12 @@ const emailRegistro = async datos =>{
     }
   });
 
+  //TODO: Mover a variables de entorno
+  //*Important: 
+  //!Deprecated
+  //?
+  
   const info = await transport.sendMail({
-    
     from:'"Uptask - Administraor de Proyectos" <cuentas @uptask.com',
     to:email,
     subject:"Uptask - Comprueba tu cuenta",
@@ -22,7 +26,32 @@ const emailRegistro = async datos =>{
     `
   });
 }
-module.exports  = emailRegistro
+const emailRecuperacion = async datos =>{
+  const {email,name,token} = datos;
+  const transport = nodemailer.createTransport({
+   service: "gmail",
+   auth: {
+     user: "pruebasUptask@gmail.com",
+     pass: "pruebasUptask99"
+   }
+ });
+
+ const info = await transport.sendMail({
+   
+   from:'"Uptask - Administraor de Proyectos" <cuentas @uptask.com',
+   to:email,
+   subject:"Uptask - Reestablece tu contraseña",
+   html:`<p> Hola ${name} Reestablece tu cuenta</p>
+   <p> Hola sigue el siguiente enlace para reestablecer tu password:
+       <a href="${process.env.FRONTEND}/recuperar-password/${token}">Reestablecer Contraseña</a></p>
+   <p>Si tu no solicitaste este email, omite este mensaje</p>
+   `
+ });
+}
+module.exports  = {
+  emailRegistro,
+  emailRecuperacion
+}
 
 
 

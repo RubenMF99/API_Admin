@@ -1,7 +1,7 @@
 const UserModel = require("../models/Usuario");
 const generarId =  require("../helpers/generarId");
 const generarToken =  require("../helpers/generarJWT");
-const emailRegistro = require("../helpers/emails");
+const {emailRegistro,emailRecuperacion} = require("../helpers/emails");
 
 const registrar_user = async(req,res) => {
     const {email} = req.body;
@@ -82,6 +82,11 @@ const recoverPassword = async (req,res)=>{
     try{
         User.token = generarId();
         await User.save();
+        const {token, name} = User;
+        emailRecuperacion( {
+            nombre:User.name,
+            email:User.email,
+            token:User.token});
         res.json({msg:"Hemos enviado un email con las instrucciones"});
 
     }catch(error){
